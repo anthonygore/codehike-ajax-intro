@@ -2,63 +2,10 @@
 
 #AJAX Introduction
 
-###Anthony Gore, 6/2/16
-
 * AJAX allows a web page to request and receive data without reloading the page.
 * Allows functionality like Google's search autocomplete.
-* `XMLHttpRequest` API is used to manage AJAX in Javascript.
 
-Example 1: Synchronous AJAX  
-
-index.html
-
-	<!DOCTYPE html>
-	<html>
-	<head>
-		<meta charset="utf-8"/>
-		<link rel="stylesheet" type="text/css" href="style.css">
-	</head>
-	<body>
-		<div id="container"></div>
-		<script src="script.js"></script>
-	</body>
-	</html> 
-	
-script.js
-
-	function load() {
-		var url = 'https://httpbin.org/ip';
-		var xhr = new XMLHttpRequest();         
-	    xhr.open('GET', url, false);
-	    xhr.send();
-		document.getElementById('container').innerHTML = xhr.responseText;
-	}
-
-	load();
-	
-* This works, but hangs the browser. If the server takes a while to respond it will provide a bad user experience.
-* If you make the request asynchronous i.e. `xhr.open('GET', url, true);`, nothing is added to the div because the code executes before the HTTP request has been completed. If you check the `readyState` property you'll see at the time of return it's at `1` in this example.
-* The solution is to  use the event handler `onreadystatechange` which triggers at every stage of the HTTP request
-
-Example 2: Asynchronous AJAX
-
-script.js 
-  
-	function load() {
-		var url = 'https://httpbin.org/ip';
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState === 4) {
-     			document.getElementById('container').innerHTML = xhr.responseText;
-    		}
-  		};      
-	    xhr.open('GET', url, true);
-	    xhr.send();
-	}
-
-	load();
-
-Exercise: An app that shows the time
+__Exercise__: allow a user to check their IP by retrieving it from an IP-checking web service (URL provided below)
 
 index.html
 
@@ -69,32 +16,28 @@ index.html
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
-		<div id="container"></div>
-		<button id="trigger">Get Time</div>
+		<div id="container">
+			<span>Your IP:</span>
+			<span id="ip"></span>
+		</div>
+		<button id="update">Update</button>
 		<script src="script.js"></script>
 	</body>
-	</html> 
+	</html>
 
-script.js
+1. Create a function called `sync` with no arguments.
+2. `sync` will clear the contents of the span `ip`, then will fill it with a string ("hello" will do for now).
+3. Create a function which is called on the click event of the button with id `update`. This function should call `sync`.
 
-	function load() {
-		var url = 'https://api.timezonedb.com/?zone=America/Toronto&format=json&key=P9SJIAQ7AHKD';
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState === 4) {
-				var responseObj = JSON.parse(xhr.responseText);
-     			document.getElementById('container').innerHTML = responseObj.timestamp;
-    		}
-  		};      
-	    xhr.open('GET', url, true);
-	    xhr.send();
-	}
+	* `XMLHttpRequest` API is used to manage AJAX in Javascript. The API documentation can be found here: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
 
-	document.getElementById("trigger").addEventListener("click", function(){
-   		load(); 
-	});
+4. Now get the function to make an AJAX call to httpbin and retrieve an IP address. Do it synchronously. The URL is `https://httpbin.org/ip`
 
-Further reading:
+	* This works, but hangs the browser. If the server takes a while to respond it will provide a bad user experience.
 
-https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
-	
+5. Copy the function `sync` and create a new function, `async`. It will do the same AJAX call, only asyncronously. Make your button click event call `async` now instead of `sync`.
+
+	* If you make the request asynchronous i.e. `xhr.open('GET', url, true);`, nothing is added to the div because the code executes before the HTTP request has been completed. If you check the `readyState` property you'll see at the time of return it's at `1` in this example.
+	* The solution is to  use the event handler `onreadystatechange` which triggers at every stage of the HTTP request
+
+6. To finish off, parse the IP properly, style the document etc.
