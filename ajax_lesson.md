@@ -28,11 +28,9 @@ index.html
 1. Create a function called `sync` with no arguments.
 2. `sync` will clear the contents of the span `ip`, then will fill it with a string ("hello" will do for now).
 3. Create a function which is called on the click event of the button with id `update`. This function should call `sync`.
-
-	* `XMLHttpRequest` API is used to manage AJAX in Javascript. The API documentation can be found here: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
-
 4. Now get the function to make an AJAX call to httpbin and retrieve an IP address. Do it synchronously. The URL is `https://httpbin.org/ip`
 
+	* `XMLHttpRequest` API is used to manage AJAX in Javascript. The API documentation can be found here: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
 	* This works, but hangs the browser. If the server takes a while to respond it will provide a bad user experience.
 
 5. Copy the function `sync` and create a new function, `async`. It will do the same AJAX call, only asyncronously. Make your button click event call `async` now instead of `sync`.
